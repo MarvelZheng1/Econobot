@@ -28,3 +28,15 @@ def findMarketDepth(pair):
         return total
     
     return(findSubtotals(asks) + findSubtotals(bids))
+
+
+def findAveragePrice(pair):
+    try:
+        response = kraken.query_public('Depth', {'pair': pair, 'count': '500'})
+        asks = response['result'][list(response["result"].keys())[0]]['asks']
+    except HTTPError as e:
+        print(str(e))
+    sum = 0
+    for i in asks:
+        sum += float(i[0])
+    return sum / 500
