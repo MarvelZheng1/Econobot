@@ -28,3 +28,4 @@ def findMarketDepth(pair):
         return total
     
     return(findSubtotals(asks) + findSubtotals(bids))
+    

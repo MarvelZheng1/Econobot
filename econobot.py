@@ -1,7 +1,7 @@
 import discord
 import os
 import krakenex
-import market_depth
+import crypto_data
 from dotenv import load_dotenv
 from requests.exceptions import HTTPError
 
@@ -16,6 +16,6 @@ async def on_ready():
 
 @bot.command(name="market_depth", description="finds market depth for given pair")
 async def market_depth(ctx, pair):
-    await ctx.respond(market_depth.findMarketDepth(pair))
+    await ctx.respond(crypto_data.findMarketDepth(pair))
 
 bot.run(TOKEN)
