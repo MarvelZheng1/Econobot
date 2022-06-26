@@ -4,6 +4,7 @@ import krakenex
 import crypto_data
 from dotenv import load_dotenv
 from requests.exceptions import HTTPError
+import matplotlib.pyplot as plt
 
 kraken = krakenex.API()
 load_dotenv()
@@ -31,5 +32,13 @@ async def price(ctx, pair):
     else:
         await ctx.respond(f'{pair} is an invalid pair.')
 
+@bot.command(name = "graph_depth", description = "displays the market depth graph for a currency pair")
+async def graph_depth(ctx, pair):
+    if crypto_data.checkValidity(pair):
+        await ctx.respond(file = discord.File(crypto_data.graph(pair)))
+        os.remove("graph.png")
+        plt.close()
+    else:
+        await ctx.respond(f'{pair} is an invalid pair.')
 
 bot.run(TOKEN)
