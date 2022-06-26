@@ -2,6 +2,11 @@ from requests.exceptions import HTTPError
 import krakenex
 import matplotlib.pyplot as plt
 
+
+import pprint
+import datetime
+import time
+
 kraken = krakenex.API()
 
 def checkValidity(id): #false means invalid, true means valid
@@ -46,6 +51,7 @@ def findAveragePrice(pair):
         asks = response['result'][list(response["result"].keys())[0]]['asks']
     except HTTPError as e:
         print(str(e))
+
     sum = 0
     for i in asks:
         sum += float(i[0])
@@ -78,3 +84,16 @@ def graph(pair):
     plt.savefig("graph.png")
     return "graph.png"
     
+def findOhlc(pair):
+    now = datetime.datetime.now()
+    unixNow = int(time.mktime(now.timetuple()))
+    try:
+        response = kraken.query_public('OHLC', {'pair': pair, 'interval': 1440, 'since': unixNow-3666})
+        open = response['result'][list(response["result"].keys())[0]][0][1]
+        high = response['result'][list(response["result"].keys())[0]][0][2]
+        low = response['result'][list(response["result"].keys())[0]][0][3]
+        close = response['result'][list(response["result"].keys())[0]][0][4]
+    except HTTPError as e:
+        print(str(e))
+        
+    return("Open: " + open + ", High: " + high + ", Low: " + low + ", Close: " + close)

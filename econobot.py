@@ -38,6 +38,11 @@ async def graph_depth(ctx, pair):
         await ctx.respond(file = discord.File(crypto_data.graph(pair)))
         os.remove("graph.png")
         plt.close()
+
+@bot.command(name="ohlc", description="finds the open, high, low, and close values for given pair")
+async def ohlc(ctx, pair):
+    if crypto_data.checkValidity(pair):
+        await ctx.respond(f'{pair} ask price: {crypto_data.findOhlc(pair)}')
     else:
         await ctx.respond(f'{pair} is an invalid pair.')
 
