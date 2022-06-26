@@ -3,6 +3,16 @@ import krakenex
 
 kraken = krakenex.API()
 
+
+def checkValidity(id): #false means invalid, true means valid
+    try:
+        response = kraken.query_public('Depth', {'pair': id, 'count': '500'})
+        bids = response['result'][list(response["result"].keys())[0]]['bids']
+        return True
+    except KeyError:
+        return False
+
+
 def findMarketDepth(pair):
     try:
         response = kraken.query_public('Depth', {'pair': pair, 'count': '500'})
